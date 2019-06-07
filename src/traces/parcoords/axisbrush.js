@@ -454,6 +454,9 @@ function makeFilter() {
     var consolidated;
     var bounds;
     return {
+        flip: function() {
+            filter.reverse();
+        },
         set: function(a) {
             filter = a
                 .map(function(d) { return d.slice().sort(sortAsc); })
@@ -461,8 +464,8 @@ function makeFilter() {
 
             // handle unselected case
             if(filter.length === 1 &&
-                filter[0][0] === -Infinity &&
-                filter[0][1] === Infinity) {
+                Math.abs(filter[0][0]) === Infinity &&
+                Math.abs(filter[0][1]) === Infinity) {
                 filter = [[0, -1]];
             }
 

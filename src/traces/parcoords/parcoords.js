@@ -381,6 +381,11 @@ function updatePanelLayout(yAxis, vm) {
     }
 }
 
+function flipRange(range) {
+    if(!range) return range;
+    return [range[1], range[0]];
+}
+
 var linearAxis;
 
 function linearFormat(v, tickformat) {
@@ -400,7 +405,7 @@ function extremeText(d, isTop) {
     return linearFormat(v, d.tickFormat);
 }
 
-module.exports = function(gd, svg, parcoordsLineLayers, cdModule, layout, callbacks) {
+module.exports = function parcoords(gd, svg, parcoordsLineLayers, cdModule, layout, callbacks) {
     var state = parcoordsInteractionState();
 
     var fullLayout = gd._fullLayout;
@@ -666,6 +671,22 @@ module.exports = function(gd, svg, parcoordsLineLayers, cdModule, layout, callba
             } else {
                 return 'middle';
             }
+        })
+        .on('click', function(d, i, n) {
+            d.model.dimensions[n].range = flipRange(d.model.dimensions[n].range);
+            d.brush.filter.flip();
+
+            // svg.remove();
+            // parcoordsLineLayer.remove();
+            parcoordsControlOverlay.remove();
+            yAxis.remove();
+            axisOverlays.remove();
+            axis.remove();
+            axisHeading.remove();
+            axisTitle.remove();
+
+            // recursive call
+            parcoords(gd, svg, parcoordsLineLayers, cdModule, layout, callbacks);
         });
 
     var axisExtent = axisOverlays.selectAll('.' + c.cn.axisExtent)
