@@ -22,11 +22,25 @@ module.exports = {
     labelangle: {
         valType: 'angle',
         dflt: 0,
-        role: 'style',
+        role: 'info',
         editType: 'plot',
         description: [
             'Sets the angle of the labels with respect to the horizontal.',
             'For example, a `tickangle` of -90 draws the labels vertically.'
+        ].join(' ')
+    },
+
+    labelposition: {
+        valType: 'enumerated',
+        role: 'info',
+        values: ['top', 'bottom', 'auto'],
+        dflt: 'auto',
+        editType: 'plot',
+        description: [
+            'Specifies the location of the `label`.',
+            '*top* positions labels above, next to the title',
+            '*bottom* positions labels below the graph',
+            '*auto* positions horizontal labels above and when tilted below.',
         ].join(' ')
     },
 
