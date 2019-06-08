@@ -8,11 +8,11 @@
 
 'use strict';
 
-var countryRegex = require('country-regex');
+var countries = require("i18n-iso-countries");
 var Lib = require('../lib');
 
-// make list of all country iso3 ids from at runtime
-var countryIds = Object.keys(countryRegex);
+// Minimize for browser.
+countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
 var locationmodeToIdFinder = {
     'ISO-3': Lib.identity,
@@ -21,16 +21,14 @@ var locationmodeToIdFinder = {
 };
 
 function countryNameToISO3(countryName) {
-    for(var i = 0; i < countryIds.length; i++) {
-        var iso3 = countryIds[i];
-        var regex = new RegExp(countryRegex[iso3]);
-
-        if(regex.test(countryName.trim().toLowerCase())) return iso3;
+    // Remove trailing and double spaces
+    countryName = countryName.trim().replace(/ +(?= )/g, '');
+    var iso3 = countries.getAlpha3Code(countryName, 'en');
+    if(!iso3) {
+        Lib.log('Unrecognized country name: ' + countryName + '.');
+        return false;
     }
-
-    Lib.log('Unrecognized country name: ' + countryName + '.');
-
-    return false;
+    return iso3;
 }
 
 function locationToFeature(locationmode, location, features) {

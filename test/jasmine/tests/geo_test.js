@@ -490,7 +490,7 @@ describe('geojson / topojson utils', function() {
         });
 
         it('with *country names* locationmode', function() {
-            var out = _locationToFeature(topojson, 'United States', 'country names');
+            var out = _locationToFeature(topojson, 'United States of America', 'country names');
 
             expect(Object.keys(out)).toEqual(['type', 'id', 'properties', 'geometry']);
             expect(out.id).toEqual('USA');
@@ -509,8 +509,8 @@ describe('geojson / topojson utils', function() {
         var topojson = GeoAssets.topojson[topojsonName];
 
         var shouldPass = [
-            'Virgin Islands (U.S.)',
-            ' Virgin   Islands (U.S.) '
+            'Virgin Islands, U.S.',
+            ' Virgin   Islands, U.S. '
         ];
 
         shouldPass.forEach(function(str) {
